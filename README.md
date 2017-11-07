@@ -1,0 +1,1 @@
+# RESIDS_IND_SEIS
