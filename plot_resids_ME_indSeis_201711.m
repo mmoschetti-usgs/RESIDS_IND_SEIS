@@ -2,10 +2,12 @@ function []=plot_resids_ME_indSeis_201711()
 
 %
 close all
+system('rm vals_residME_indSeis.mat')
 
 % plot logicals
 plot_bias_phi_tau=1
 plot_within_event=1
+plot_within_event_vs30=1
 plot_between_event=1
 % plot_within_event_together=0
 
@@ -14,10 +16,14 @@ if exist('vals_residME_indSeis.mat','file')
   disp('Loading existing mat-file, vals_residME_indSeis.mat ...')
   load vals_residME_indSeis.mat
 else
-  [dist_ngaw2,mag_ngaw2,depth_ngaw2,per_arr_ngaw2,resid_c_ci95l_ngaw2,resid_c_ngaw2,resid_c_ci95u_ngaw2,resid_phi_ci95l_ngaw2,resid_phi_ngaw2,resid_phi_ci95u_ngaw2,resid_tau_ci95l_ngaw2,resid_tau_ngaw2,resid_tau_ci95u_ngaw2,resid_intra_ngaw2,resid_inter_ngaw2]=read_data_NGAW2();
-  [dist_ngaep01,mag_ngaep01,depth_ngaep01,per_arr_ngaep01,resid_c_ci95l_ngaep01,resid_c_ngaep01,resid_c_ci95u_ngaep01,resid_phi_ci95l_ngaep01,resid_phi_ngaep01,resid_phi_ci95u_ngaep01,resid_tau_ci95l_ngaep01,resid_tau_ngaep01,resid_tau_ci95u_ngaep01,resid_intra_ngaep01,resid_inter_ngaep01]=read_data_NGAEp01();
-  [dist_ngaep03,mag_ngaep03,depth_ngaep03,per_arr_ngaep03,resid_c_ci95l_ngaep03,resid_c_ngaep03,resid_c_ci95u_ngaep03,resid_phi_ci95l_ngaep03,resid_phi_ngaep03,resid_phi_ci95u_ngaep03,resid_tau_ci95l_ngaep03,resid_tau_ngaep03,resid_tau_ci95u_ngaep03,resid_intra_ngaep03,resid_inter_ngaep03]=read_data_NGAEp03();
-  [dist_ceus,mag_ceus,depth_ceus,per_arr_ceus,resid_c_ci95l_ceus,resid_c_ceus,resid_c_ci95u_ceus,resid_phi_ci95l_ceus,resid_phi_ceus,resid_phi_ci95u_ceus,resid_tau_ci95l_ceus,resid_tau_ceus,resid_tau_ci95u_ceus,resid_intra_ceus,resid_inter_ceus]=read_data_CEUS();
+  disp('NGAW')
+  [dist_ngaw2,mag_ngaw2,depth_ngaw2,per_arr_ngaw2,resid_c_ci95l_ngaw2,resid_c_ngaw2,resid_c_ci95u_ngaw2,resid_phi_ci95l_ngaw2,resid_phi_ngaw2,resid_phi_ci95u_ngaw2,resid_tau_ci95l_ngaw2,resid_tau_ngaw2,resid_tau_ci95u_ngaw2,resid_intra_ngaw2,resid_inter_ngaw2,vs30_ngaw2]=read_data_NGAW2();
+  disp('NGAE1')
+  [dist_ngaep01,mag_ngaep01,depth_ngaep01,per_arr_ngaep01,resid_c_ci95l_ngaep01,resid_c_ngaep01,resid_c_ci95u_ngaep01,resid_phi_ci95l_ngaep01,resid_phi_ngaep01,resid_phi_ci95u_ngaep01,resid_tau_ci95l_ngaep01,resid_tau_ngaep01,resid_tau_ci95u_ngaep01,resid_intra_ngaep01,resid_inter_ngaep01,vs30_ngaep01]=read_data_NGAEp01();
+  disp('NGAE2')
+  [dist_ngaep03,mag_ngaep03,depth_ngaep03,per_arr_ngaep03,resid_c_ci95l_ngaep03,resid_c_ngaep03,resid_c_ci95u_ngaep03,resid_phi_ci95l_ngaep03,resid_phi_ngaep03,resid_phi_ci95u_ngaep03,resid_tau_ci95l_ngaep03,resid_tau_ngaep03,resid_tau_ci95u_ngaep03,resid_intra_ngaep03,resid_inter_ngaep03,vs30_ngaep03]=read_data_NGAEp03();
+  disp('CEUS')
+  [dist_ceus,mag_ceus,depth_ceus,per_arr_ceus,resid_c_ci95l_ceus,resid_c_ceus,resid_c_ci95u_ceus,resid_phi_ci95l_ceus,resid_phi_ceus,resid_phi_ci95u_ceus,resid_tau_ci95l_ceus,resid_tau_ceus,resid_tau_ci95u_ceus,resid_intra_ceus,resid_inter_ceus,vs30_ceus]=read_data_CEUS();
   save vals_residME_indSeis
 end
 
@@ -185,6 +191,54 @@ if plot_within_event
 [dist_bins_0p5_ceus,cnt_distBins_0p5_ceus, mean_distBins_0p5_ceus,var_distBins_0p5_ceus,mean_distBins_sm_0p5_ceus,var_distBins_sm_0p5_ceus]=bin_logData_by_dist(dist_ceus.t0p5,resid_intra_ceus.t0p5);
 [dist_bins_1p0_ceus,cnt_distBins_1p0_ceus, mean_distBins_1p0_ceus,var_distBins_1p0_ceus,mean_distBins_sm_1p0_ceus,var_distBins_sm_1p0_ceus]=bin_logData_by_dist(dist_ceus.t1p0,resid_intra_ceus.t1p0);
 [dist_bins_2p0_ceus,cnt_distBins_2p0_ceus, mean_distBins_2p0_ceus,var_distBins_2p0_ceus,mean_distBins_sm_2p0_ceus,var_distBins_sm_2p0_ceus]=bin_logData_by_dist(dist_ceus.t2p0,resid_intra_ceus.t2p0);
+%
+if plot_within_event_vs30
+figure
+subplot(2,3,1)
+plot(vs30_ngaw2.t0p1,resid_intra_ngaw2.t0p1,'bs'), hold on
+%set(gca,'XScale','log')
+%set(gca,'XLim',[3 300]),
+title('intra-event, NGA-W2 0.1 s')
+xlabel('Vs30 (m/s)')
+ylabel('mean(intra)')
+subplot(2,3,2)
+plot(vs30_ngaw2.t0p2,resid_intra_ngaw2.t0p2,'bs'), hold on
+%set(gca,'XScale','log')
+%set(gca,'XLim',[3 300]),
+title('0.2 s')
+xlabel('Vs30 (m/s)')
+ylabel('mean(intra)')
+subplot(2,3,3)
+plot(vs30_ngaw2.t0p3,resid_intra_ngaw2.t0p3,'bs'), hold on
+%set(gca,'XScale','log')
+%set(gca,'XLim',[3 300]),
+title('0.3 s')
+xlabel('Vs30 (m/s)')
+ylabel('mean(intra)')
+subplot(2,3,4)
+plot(vs30_ngaw2.t1p0,resid_intra_ngaw2.t1p0,'bs'), hold on
+%set(gca,'XScale','log')
+%set(gca,'XLim',[3 300]),
+title('1.0 s')
+xlabel('Vs30 (m/s)')
+ylabel('mean(intra)')
+subplot(2,3,5)
+plot(vs30_ngaw2.t2p0,resid_intra_ngaw2.t2p0,'bs'), hold on
+%set(gca,'XScale','log')
+%set(gca,'XLim',[3 300]),
+title('2.0 s')
+%xlabel('R (km)')
+xlabel('Vs30 (m/s)')
+ylabel('mean(intra)')
+subplot(2,3,6)
+plot(vs30_ngaw2.t3p0,resid_intra_ngaw2.t3p0,'bs'), hold on
+title('3.0 s')
+xlabel('Vs30 (m/s)')
+ylabel('mean(intra)')
+%set(gca,'XScale','log')
+%set(gca,'XLim',[3 300]),
+end % end within event vs30
+
 %
 figure
 subplot(2,3,1)
@@ -383,15 +437,15 @@ end
 %-----------------------------------------------------
 
 %-----------------------------------------------------
-function [dist,mag,depth,per_arr,resid_c_ci95l,resid_c,resid_c_ci95u,resid_phi_ci95l,resid_phi,resid_phi_ci95u,resid_tau_ci95l,resid_tau,resid_tau_ci95u,resid_intra,resid_inter]=read_data_CEUS()
+function [dist,mag,depth,per_arr,resid_c_ci95l,resid_c,resid_c_ci95u,resid_phi_ci95l,resid_phi,resid_phi_ci95u,resid_tau_ci95l,resid_tau,resid_tau_ci95u,resid_intra,resid_inter,vs30]=read_data_CEUS()
 
 %
-[mag_0p1,depth_0p1,dist_0p1,resid_c_ci95l_0p1,resid_c_0p1,resid_c_ci95u_0p1,resid_phi_ci95l_0p1,resid_phi_0p1,resid_phi_ci95u_0p1,resid_tau_ci95l_0p1,resid_tau_0p1,resid_tau_ci95u_0p1,resid_intra_0p1,resid_inter_0p1]=read_data_1csvCEUS('induced_lme_20171103/CEUS_resid_0p1_resid_0p1_lme.csv');
-[mag_0p2,depth_0p2,dist_0p2,resid_c_ci95l_0p2,resid_c_0p2,resid_c_ci95u_0p2,resid_phi_ci95l_0p2,resid_phi_0p2,resid_phi_ci95u_0p2,resid_tau_ci95l_0p2,resid_tau_0p2,resid_tau_ci95u_0p2,resid_intra_0p2,resid_inter_0p2]=read_data_1csvCEUS('induced_lme_20171103/CEUS_resid_0p2_resid_0p2_lme.csv');
-[mag_0p3,depth_0p3,dist_0p3,resid_c_ci95l_0p3,resid_c_0p3,resid_c_ci95u_0p3,resid_phi_ci95l_0p3,resid_phi_0p3,resid_phi_ci95u_0p3,resid_tau_ci95l_0p3,resid_tau_0p3,resid_tau_ci95u_0p3,resid_intra_0p3,resid_inter_0p3]=read_data_1csvCEUS('induced_lme_20171103/CEUS_resid_0p3_resid_0p3_lme.csv');
-[mag_0p5,depth_0p5,dist_0p5,resid_c_ci95l_0p5,resid_c_0p5,resid_c_ci95u_0p5,resid_phi_ci95l_0p5,resid_phi_0p5,resid_phi_ci95u_0p5,resid_tau_ci95l_0p5,resid_tau_0p5,resid_tau_ci95u_0p5,resid_intra_0p5,resid_inter_0p5]=read_data_1csvCEUS('induced_lme_20171103/CEUS_resid_0p5_resid_0p5_lme.csv');
-[mag_1p0,depth_1p0,dist_1p0,resid_c_ci95l_1p0,resid_c_1p0,resid_c_ci95u_1p0,resid_phi_ci95l_1p0,resid_phi_1p0,resid_phi_ci95u_1p0,resid_tau_ci95l_1p0,resid_tau_1p0,resid_tau_ci95u_1p0,resid_intra_1p0,resid_inter_1p0]=read_data_1csvCEUS('induced_lme_20171103/CEUS_resid_1p0_resid_1p0_lme.csv');
-[mag_2p0,depth_2p0,dist_2p0,resid_c_ci95l_2p0,resid_c_2p0,resid_c_ci95u_2p0,resid_phi_ci95l_2p0,resid_phi_2p0,resid_phi_ci95u_2p0,resid_tau_ci95l_2p0,resid_tau_2p0,resid_tau_ci95u_2p0,resid_intra_2p0,resid_inter_2p0]=read_data_1csvCEUS('induced_lme_20171103/CEUS_resid_2p0_resid_2p0_lme.csv');
+[mag_0p1,depth_0p1,dist_0p1,resid_c_ci95l_0p1,resid_c_0p1,resid_c_ci95u_0p1,resid_phi_ci95l_0p1,resid_phi_0p1,resid_phi_ci95u_0p1,resid_tau_ci95l_0p1,resid_tau_0p1,resid_tau_ci95u_0p1,resid_intra_0p1,resid_inter_0p1,vs30_0p1]=read_data_1csvCEUS('induced_lme_20171103/CEUS_resid_0p1_resid_0p1_lme.csv');
+[mag_0p2,depth_0p2,dist_0p2,resid_c_ci95l_0p2,resid_c_0p2,resid_c_ci95u_0p2,resid_phi_ci95l_0p2,resid_phi_0p2,resid_phi_ci95u_0p2,resid_tau_ci95l_0p2,resid_tau_0p2,resid_tau_ci95u_0p2,resid_intra_0p2,resid_inter_0p2,vs30_0p2]=read_data_1csvCEUS('induced_lme_20171103/CEUS_resid_0p2_resid_0p2_lme.csv');
+[mag_0p3,depth_0p3,dist_0p3,resid_c_ci95l_0p3,resid_c_0p3,resid_c_ci95u_0p3,resid_phi_ci95l_0p3,resid_phi_0p3,resid_phi_ci95u_0p3,resid_tau_ci95l_0p3,resid_tau_0p3,resid_tau_ci95u_0p3,resid_intra_0p3,resid_inter_0p3,vs30_0p3]=read_data_1csvCEUS('induced_lme_20171103/CEUS_resid_0p3_resid_0p3_lme.csv');
+[mag_0p5,depth_0p5,dist_0p5,resid_c_ci95l_0p5,resid_c_0p5,resid_c_ci95u_0p5,resid_phi_ci95l_0p5,resid_phi_0p5,resid_phi_ci95u_0p5,resid_tau_ci95l_0p5,resid_tau_0p5,resid_tau_ci95u_0p5,resid_intra_0p5,resid_inter_0p5,vs30_0p5]=read_data_1csvCEUS('induced_lme_20171103/CEUS_resid_0p5_resid_0p5_lme.csv');
+[mag_1p0,depth_1p0,dist_1p0,resid_c_ci95l_1p0,resid_c_1p0,resid_c_ci95u_1p0,resid_phi_ci95l_1p0,resid_phi_1p0,resid_phi_ci95u_1p0,resid_tau_ci95l_1p0,resid_tau_1p0,resid_tau_ci95u_1p0,resid_intra_1p0,resid_inter_1p0,vs30_1p0]=read_data_1csvCEUS('induced_lme_20171103/CEUS_resid_1p0_resid_1p0_lme.csv');
+[mag_2p0,depth_2p0,dist_2p0,resid_c_ci95l_2p0,resid_c_2p0,resid_c_ci95u_2p0,resid_phi_ci95l_2p0,resid_phi_2p0,resid_phi_ci95u_2p0,resid_tau_ci95l_2p0,resid_tau_2p0,resid_tau_ci95u_2p0,resid_intra_2p0,resid_inter_2p0,vs30_2p0]=read_data_1csvCEUS('induced_lme_20171103/CEUS_resid_2p0_resid_2p0_lme.csv');
 %
 per_arr=[0.1 0.2 0.3 0.5 1.0 2.0];
 resid_c_ci95l=[resid_c_ci95l_0p1 resid_c_ci95l_0p2 resid_c_ci95l_0p3 resid_c_ci95l_0p5 resid_c_ci95l_1p0 resid_c_ci95l_2p0];
@@ -418,6 +472,13 @@ mag.t0p5=mag_0p5;
 mag.t1p0=mag_1p0;
 mag.t2p0=mag_2p0;
 %
+vs30.t0p1=vs30_0p1;
+vs30.t0p2=vs30_0p2;
+vs30.t0p3=vs30_0p3;
+vs30.t0p5=vs30_0p5;
+vs30.t1p0=vs30_1p0;
+vs30.t2p0=vs30_2p0;
+%
 depth.t0p1=depth_0p1;
 depth.t0p2=depth_0p2;
 depth.t0p3=depth_0p3;
@@ -445,20 +506,20 @@ end
 
 
 %-----------------------------------------------------
-function [dist,mag,depth,per_arr,resid_c_ci95l,resid_c,resid_c_ci95u,resid_phi_ci95l,resid_phi,resid_phi_ci95u,resid_tau_ci95l,resid_tau,resid_tau_ci95u,resid_intra,resid_inter]=read_data_NGAEp03()
+function [dist,mag,depth,per_arr,resid_c_ci95l,resid_c,resid_c_ci95u,resid_phi_ci95l,resid_phi,resid_phi_ci95u,resid_tau_ci95l,resid_tau,resid_tau_ci95u,resid_intra,resid_inter,vs30]=read_data_NGAEp03()
 
 %
 [mag_0p1,depth_0p1,dist_0p1,resid_c_ci95l_0p1,resid_c_0p1,resid_c_ci95u_0p1,resid_phi_ci95l_0p1,resid_phi_0p1,resid_phi_ci95u_0p1,resid_tau_ci95l_0p1,resid_tau_0p1,resid_tau_ci95u_0p1,resid_intra_0p1,resid_inter_0p1,vs30_0p1]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_0p1_resid_0p1_lme.csv');
-[mag_0p2,depth_0p2,dist_0p2,resid_c_ci95l_0p2,resid_c_0p2,resid_c_ci95u_0p2,resid_phi_ci95l_0p2,resid_phi_0p2,resid_phi_ci95u_0p2,resid_tau_ci95l_0p2,resid_tau_0p2,resid_tau_ci95u_0p2,resid_intra_0p2,resid_inter_0p2,vs30_0p1]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_0p2_resid_0p2_lme.csv');
-[mag_0p3,depth_0p3,dist_0p3,resid_c_ci95l_0p3,resid_c_0p3,resid_c_ci95u_0p3,resid_phi_ci95l_0p3,resid_phi_0p3,resid_phi_ci95u_0p3,resid_tau_ci95l_0p3,resid_tau_0p3,resid_tau_ci95u_0p3,resid_intra_0p3,resid_inter_0p3,vs30_0p1]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_0p3_resid_0p3_lme.csv');
-[mag_0p4,depth_0p4,dist_0p4,resid_c_ci95l_0p4,resid_c_0p4,resid_c_ci95u_0p4,resid_phi_ci95l_0p4,resid_phi_0p4,resid_phi_ci95u_0p4,resid_tau_ci95l_0p4,resid_tau_0p4,resid_tau_ci95u_0p4,resid_intra_0p4,resid_inter_0p4,vs30_0p1]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_0p4_resid_0p4_lme.csv');
-[mag_0p5,depth_0p5,dist_0p5,resid_c_ci95l_0p5,resid_c_0p5,resid_c_ci95u_0p5,resid_phi_ci95l_0p5,resid_phi_0p5,resid_phi_ci95u_0p5,resid_tau_ci95l_0p5,resid_tau_0p5,resid_tau_ci95u_0p5,resid_intra_0p5,resid_inter_0p5,vs30_0p1]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_0p5_resid_0p5_lme.csv');
-[mag_1p0,depth_1p0,dist_1p0,resid_c_ci95l_1p0,resid_c_1p0,resid_c_ci95u_1p0,resid_phi_ci95l_1p0,resid_phi_1p0,resid_phi_ci95u_1p0,resid_tau_ci95l_1p0,resid_tau_1p0,resid_tau_ci95u_1p0,resid_intra_1p0,resid_inter_1p0,vs30_0p1]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_1p0_resid_1p0_lme.csv');
-[mag_2p0,depth_2p0,dist_2p0,resid_c_ci95l_2p0,resid_c_2p0,resid_c_ci95u_2p0,resid_phi_ci95l_2p0,resid_phi_2p0,resid_phi_ci95u_2p0,resid_tau_ci95l_2p0,resid_tau_2p0,resid_tau_ci95u_2p0,resid_intra_2p0,resid_inter_2p0]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_2p0_resid_2p0_lme.csv');
-[mag_3p0,depth_3p0,dist_3p0,resid_c_ci95l_3p0,resid_c_3p0,resid_c_ci95u_3p0,resid_phi_ci95l_3p0,resid_phi_3p0,resid_phi_ci95u_3p0,resid_tau_ci95l_3p0,resid_tau_3p0,resid_tau_ci95u_3p0,resid_intra_3p0,resid_inter_3p0]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_3p0_resid_3p0_lme.csv');
-[mag_4p0,depth_4p0,dist_4p0,resid_c_ci95l_4p0,resid_c_4p0,resid_c_ci95u_4p0,resid_phi_ci95l_4p0,resid_phi_4p0,resid_phi_ci95u_4p0,resid_tau_ci95l_4p0,resid_tau_4p0,resid_tau_ci95u_4p0,resid_intra_4p0,resid_inter_4p0]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_4p0_resid_4p0_lme.csv');
-[mag_5p0,depth_5p0,dist_5p0,resid_c_ci95l_5p0,resid_c_5p0,resid_c_ci95u_5p0,resid_phi_ci95l_5p0,resid_phi_5p0,resid_phi_ci95u_5p0,resid_tau_ci95l_5p0,resid_tau_5p0,resid_tau_ci95u_5p0,resid_intra_5p0,resid_inter_5p0]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_5p0_resid_5p0_lme.csv');
-[mag_10p0,depth_10p0,dist_10p0,resid_c_ci95l_10p0,resid_c_10p0,resid_c_ci95u_10p0,resid_phi_ci95l_10p0,resid_phi_10p0,resid_phi_ci95u_10p0,resid_tau_ci95l_10p0,resid_tau_10p0,resid_tau_ci95u_10p0,resid_intra_10p0,resid_inter_10p0]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_10p0_resid_10p0_lme.csv');
+[mag_0p2,depth_0p2,dist_0p2,resid_c_ci95l_0p2,resid_c_0p2,resid_c_ci95u_0p2,resid_phi_ci95l_0p2,resid_phi_0p2,resid_phi_ci95u_0p2,resid_tau_ci95l_0p2,resid_tau_0p2,resid_tau_ci95u_0p2,resid_intra_0p2,resid_inter_0p2,vs30_0p2]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_0p2_resid_0p2_lme.csv');
+[mag_0p3,depth_0p3,dist_0p3,resid_c_ci95l_0p3,resid_c_0p3,resid_c_ci95u_0p3,resid_phi_ci95l_0p3,resid_phi_0p3,resid_phi_ci95u_0p3,resid_tau_ci95l_0p3,resid_tau_0p3,resid_tau_ci95u_0p3,resid_intra_0p3,resid_inter_0p3,vs30_0p3]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_0p3_resid_0p3_lme.csv');
+[mag_0p4,depth_0p4,dist_0p4,resid_c_ci95l_0p4,resid_c_0p4,resid_c_ci95u_0p4,resid_phi_ci95l_0p4,resid_phi_0p4,resid_phi_ci95u_0p4,resid_tau_ci95l_0p4,resid_tau_0p4,resid_tau_ci95u_0p4,resid_intra_0p4,resid_inter_0p4,vs30_0p4]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_0p4_resid_0p4_lme.csv');
+[mag_0p5,depth_0p5,dist_0p5,resid_c_ci95l_0p5,resid_c_0p5,resid_c_ci95u_0p5,resid_phi_ci95l_0p5,resid_phi_0p5,resid_phi_ci95u_0p5,resid_tau_ci95l_0p5,resid_tau_0p5,resid_tau_ci95u_0p5,resid_intra_0p5,resid_inter_0p5,vs30_0p5]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_0p5_resid_0p5_lme.csv');
+[mag_1p0,depth_1p0,dist_1p0,resid_c_ci95l_1p0,resid_c_1p0,resid_c_ci95u_1p0,resid_phi_ci95l_1p0,resid_phi_1p0,resid_phi_ci95u_1p0,resid_tau_ci95l_1p0,resid_tau_1p0,resid_tau_ci95u_1p0,resid_intra_1p0,resid_inter_1p0,vs30_1p0]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_1p0_resid_1p0_lme.csv');
+[mag_2p0,depth_2p0,dist_2p0,resid_c_ci95l_2p0,resid_c_2p0,resid_c_ci95u_2p0,resid_phi_ci95l_2p0,resid_phi_2p0,resid_phi_ci95u_2p0,resid_tau_ci95l_2p0,resid_tau_2p0,resid_tau_ci95u_2p0,resid_intra_2p0,resid_inter_2p0,vs30_2p0]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_2p0_resid_2p0_lme.csv');
+[mag_3p0,depth_3p0,dist_3p0,resid_c_ci95l_3p0,resid_c_3p0,resid_c_ci95u_3p0,resid_phi_ci95l_3p0,resid_phi_3p0,resid_phi_ci95u_3p0,resid_tau_ci95l_3p0,resid_tau_3p0,resid_tau_ci95u_3p0,resid_intra_3p0,resid_inter_3p0,vs30_3p0]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_3p0_resid_3p0_lme.csv');
+[mag_4p0,depth_4p0,dist_4p0,resid_c_ci95l_4p0,resid_c_4p0,resid_c_ci95u_4p0,resid_phi_ci95l_4p0,resid_phi_4p0,resid_phi_ci95u_4p0,resid_tau_ci95l_4p0,resid_tau_4p0,resid_tau_ci95u_4p0,resid_intra_4p0,resid_inter_4p0,vs30_4p0]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_4p0_resid_4p0_lme.csv');
+[mag_5p0,depth_5p0,dist_5p0,resid_c_ci95l_5p0,resid_c_5p0,resid_c_ci95u_5p0,resid_phi_ci95l_5p0,resid_phi_5p0,resid_phi_ci95u_5p0,resid_tau_ci95l_5p0,resid_tau_5p0,resid_tau_ci95u_5p0,resid_intra_5p0,resid_inter_5p0,vs30_5p0]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_5p0_resid_5p0_lme.csv');
+[mag_10p0,depth_10p0,dist_10p0,resid_c_ci95l_10p0,resid_c_10p0,resid_c_ci95u_10p0,resid_phi_ci95l_10p0,resid_phi_10p0,resid_phi_ci95u_10p0,resid_tau_ci95l_10p0,resid_tau_10p0,resid_tau_ci95u_10p0,resid_intra_10p0,resid_inter_10p0,vs30_10p0]=read_data_1csv('induced_lme_20171103/NGAE_p03_resid_10p0_resid_10p0_lme.csv');
 %
 per_arr=[0.1 0.2 0.3 0.4 0.5 1.0 2.0 3.0 4.0 5.0 10.0];
 resid_c_ci95l=[resid_c_ci95l_0p1 resid_c_ci95l_0p2 resid_c_ci95l_0p3 resid_c_ci95l_0p4 resid_c_ci95l_0p5 resid_c_ci95l_1p0 resid_c_ci95l_2p0 resid_c_ci95l_3p0 resid_c_ci95l_4p0 resid_c_ci95l_5p0 resid_c_ci95l_10p0];
@@ -494,6 +555,18 @@ mag.t3p0=mag_3p0;
 mag.t4p0=mag_4p0;
 mag.t5p0=mag_5p0;
 mag.t10p0=mag_10p0;
+%
+vs30.t0p1=vs30_0p1;
+vs30.t0p2=vs30_0p2;
+vs30.t0p3=vs30_0p3;
+vs30.t0p4=vs30_0p4;
+vs30.t0p5=vs30_0p5;
+vs30.t1p0=vs30_1p0;
+vs30.t2p0=vs30_2p0;
+vs30.t3p0=vs30_3p0;
+vs30.t4p0=vs30_4p0;
+vs30.t5p0=vs30_5p0;
+vs30.t10p0=vs30_10p0;
 %
 depth.t0p1=depth_0p1;
 depth.t0p2=depth_0p2;
@@ -536,20 +609,20 @@ end
 %-----------------------------------------------------
 
 %-----------------------------------------------------
-function [dist,mag,depth,per_arr,resid_c_ci95l,resid_c,resid_c_ci95u,resid_phi_ci95l,resid_phi,resid_phi_ci95u,resid_tau_ci95l,resid_tau,resid_tau_ci95u,resid_intra,resid_inter]=read_data_NGAEp01()
+function [dist,mag,depth,per_arr,resid_c_ci95l,resid_c,resid_c_ci95u,resid_phi_ci95l,resid_phi,resid_phi_ci95u,resid_tau_ci95l,resid_tau,resid_tau_ci95u,resid_intra,resid_inter,vs30]=read_data_NGAEp01()
 
 %
-[mag_0p1,depth_0p1,dist_0p1,resid_c_ci95l_0p1,resid_c_0p1,resid_c_ci95u_0p1,resid_phi_ci95l_0p1,resid_phi_0p1,resid_phi_ci95u_0p1,resid_tau_ci95l_0p1,resid_tau_0p1,resid_tau_ci95u_0p1,resid_intra_0p1,resid_inter_0p1]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_0p1_resid_0p1_lme.csv');
-[mag_0p2,depth_0p2,dist_0p2,resid_c_ci95l_0p2,resid_c_0p2,resid_c_ci95u_0p2,resid_phi_ci95l_0p2,resid_phi_0p2,resid_phi_ci95u_0p2,resid_tau_ci95l_0p2,resid_tau_0p2,resid_tau_ci95u_0p2,resid_intra_0p2,resid_inter_0p2]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_0p2_resid_0p2_lme.csv');
-[mag_0p3,depth_0p3,dist_0p3,resid_c_ci95l_0p3,resid_c_0p3,resid_c_ci95u_0p3,resid_phi_ci95l_0p3,resid_phi_0p3,resid_phi_ci95u_0p3,resid_tau_ci95l_0p3,resid_tau_0p3,resid_tau_ci95u_0p3,resid_intra_0p3,resid_inter_0p3]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_0p3_resid_0p3_lme.csv');
-[mag_0p4,depth_0p4,dist_0p4,resid_c_ci95l_0p4,resid_c_0p4,resid_c_ci95u_0p4,resid_phi_ci95l_0p4,resid_phi_0p4,resid_phi_ci95u_0p4,resid_tau_ci95l_0p4,resid_tau_0p4,resid_tau_ci95u_0p4,resid_intra_0p4,resid_inter_0p4]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_0p4_resid_0p4_lme.csv');
-[mag_0p5,depth_0p5,dist_0p5,resid_c_ci95l_0p5,resid_c_0p5,resid_c_ci95u_0p5,resid_phi_ci95l_0p5,resid_phi_0p5,resid_phi_ci95u_0p5,resid_tau_ci95l_0p5,resid_tau_0p5,resid_tau_ci95u_0p5,resid_intra_0p5,resid_inter_0p5]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_0p5_resid_0p5_lme.csv');
-[mag_1p0,depth_1p0,dist_1p0,resid_c_ci95l_1p0,resid_c_1p0,resid_c_ci95u_1p0,resid_phi_ci95l_1p0,resid_phi_1p0,resid_phi_ci95u_1p0,resid_tau_ci95l_1p0,resid_tau_1p0,resid_tau_ci95u_1p0,resid_intra_1p0,resid_inter_1p0]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_1p0_resid_1p0_lme.csv');
-[mag_2p0,depth_2p0,dist_2p0,resid_c_ci95l_2p0,resid_c_2p0,resid_c_ci95u_2p0,resid_phi_ci95l_2p0,resid_phi_2p0,resid_phi_ci95u_2p0,resid_tau_ci95l_2p0,resid_tau_2p0,resid_tau_ci95u_2p0,resid_intra_2p0,resid_inter_2p0]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_2p0_resid_2p0_lme.csv');
-[mag_3p0,depth_3p0,dist_3p0,resid_c_ci95l_3p0,resid_c_3p0,resid_c_ci95u_3p0,resid_phi_ci95l_3p0,resid_phi_3p0,resid_phi_ci95u_3p0,resid_tau_ci95l_3p0,resid_tau_3p0,resid_tau_ci95u_3p0,resid_intra_3p0,resid_inter_3p0]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_3p0_resid_3p0_lme.csv');
-[mag_4p0,depth_4p0,dist_4p0,resid_c_ci95l_4p0,resid_c_4p0,resid_c_ci95u_4p0,resid_phi_ci95l_4p0,resid_phi_4p0,resid_phi_ci95u_4p0,resid_tau_ci95l_4p0,resid_tau_4p0,resid_tau_ci95u_4p0,resid_intra_4p0,resid_inter_4p0]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_4p0_resid_4p0_lme.csv');
-[mag_5p0,depth_5p0,dist_5p0,resid_c_ci95l_5p0,resid_c_5p0,resid_c_ci95u_5p0,resid_phi_ci95l_5p0,resid_phi_5p0,resid_phi_ci95u_5p0,resid_tau_ci95l_5p0,resid_tau_5p0,resid_tau_ci95u_5p0,resid_intra_5p0,resid_inter_5p0]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_5p0_resid_5p0_lme.csv');
-[mag_10p0,depth_10p0,dist_10p0,resid_c_ci95l_10p0,resid_c_10p0,resid_c_ci95u_10p0,resid_phi_ci95l_10p0,resid_phi_10p0,resid_phi_ci95u_10p0,resid_tau_ci95l_10p0,resid_tau_10p0,resid_tau_ci95u_10p0,resid_intra_10p0,resid_inter_10p0]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_10p0_resid_10p0_lme.csv');
+[mag_0p1,depth_0p1,dist_0p1,resid_c_ci95l_0p1,resid_c_0p1,resid_c_ci95u_0p1,resid_phi_ci95l_0p1,resid_phi_0p1,resid_phi_ci95u_0p1,resid_tau_ci95l_0p1,resid_tau_0p1,resid_tau_ci95u_0p1,resid_intra_0p1,resid_inter_0p1,vs30_0p1]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_0p1_resid_0p1_lme.csv');
+[mag_0p2,depth_0p2,dist_0p2,resid_c_ci95l_0p2,resid_c_0p2,resid_c_ci95u_0p2,resid_phi_ci95l_0p2,resid_phi_0p2,resid_phi_ci95u_0p2,resid_tau_ci95l_0p2,resid_tau_0p2,resid_tau_ci95u_0p2,resid_intra_0p2,resid_inter_0p2,vs30_0p2]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_0p2_resid_0p2_lme.csv');
+[mag_0p3,depth_0p3,dist_0p3,resid_c_ci95l_0p3,resid_c_0p3,resid_c_ci95u_0p3,resid_phi_ci95l_0p3,resid_phi_0p3,resid_phi_ci95u_0p3,resid_tau_ci95l_0p3,resid_tau_0p3,resid_tau_ci95u_0p3,resid_intra_0p3,resid_inter_0p3,vs30_0p3]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_0p3_resid_0p3_lme.csv');
+[mag_0p4,depth_0p4,dist_0p4,resid_c_ci95l_0p4,resid_c_0p4,resid_c_ci95u_0p4,resid_phi_ci95l_0p4,resid_phi_0p4,resid_phi_ci95u_0p4,resid_tau_ci95l_0p4,resid_tau_0p4,resid_tau_ci95u_0p4,resid_intra_0p4,resid_inter_0p4,vs30_0p4]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_0p4_resid_0p4_lme.csv');
+[mag_0p5,depth_0p5,dist_0p5,resid_c_ci95l_0p5,resid_c_0p5,resid_c_ci95u_0p5,resid_phi_ci95l_0p5,resid_phi_0p5,resid_phi_ci95u_0p5,resid_tau_ci95l_0p5,resid_tau_0p5,resid_tau_ci95u_0p5,resid_intra_0p5,resid_inter_0p5,vs30_0p5]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_0p5_resid_0p5_lme.csv');
+[mag_1p0,depth_1p0,dist_1p0,resid_c_ci95l_1p0,resid_c_1p0,resid_c_ci95u_1p0,resid_phi_ci95l_1p0,resid_phi_1p0,resid_phi_ci95u_1p0,resid_tau_ci95l_1p0,resid_tau_1p0,resid_tau_ci95u_1p0,resid_intra_1p0,resid_inter_1p0,vs30_1p0]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_1p0_resid_1p0_lme.csv');
+[mag_2p0,depth_2p0,dist_2p0,resid_c_ci95l_2p0,resid_c_2p0,resid_c_ci95u_2p0,resid_phi_ci95l_2p0,resid_phi_2p0,resid_phi_ci95u_2p0,resid_tau_ci95l_2p0,resid_tau_2p0,resid_tau_ci95u_2p0,resid_intra_2p0,resid_inter_2p0,vs30_2p0]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_2p0_resid_2p0_lme.csv');
+[mag_3p0,depth_3p0,dist_3p0,resid_c_ci95l_3p0,resid_c_3p0,resid_c_ci95u_3p0,resid_phi_ci95l_3p0,resid_phi_3p0,resid_phi_ci95u_3p0,resid_tau_ci95l_3p0,resid_tau_3p0,resid_tau_ci95u_3p0,resid_intra_3p0,resid_inter_3p0,vs30_3p0]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_3p0_resid_3p0_lme.csv');
+[mag_4p0,depth_4p0,dist_4p0,resid_c_ci95l_4p0,resid_c_4p0,resid_c_ci95u_4p0,resid_phi_ci95l_4p0,resid_phi_4p0,resid_phi_ci95u_4p0,resid_tau_ci95l_4p0,resid_tau_4p0,resid_tau_ci95u_4p0,resid_intra_4p0,resid_inter_4p0,vs30_4p0]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_4p0_resid_4p0_lme.csv');
+[mag_5p0,depth_5p0,dist_5p0,resid_c_ci95l_5p0,resid_c_5p0,resid_c_ci95u_5p0,resid_phi_ci95l_5p0,resid_phi_5p0,resid_phi_ci95u_5p0,resid_tau_ci95l_5p0,resid_tau_5p0,resid_tau_ci95u_5p0,resid_intra_5p0,resid_inter_5p0,vs30_5p0]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_5p0_resid_5p0_lme.csv');
+[mag_10p0,depth_10p0,dist_10p0,resid_c_ci95l_10p0,resid_c_10p0,resid_c_ci95u_10p0,resid_phi_ci95l_10p0,resid_phi_10p0,resid_phi_ci95u_10p0,resid_tau_ci95l_10p0,resid_tau_10p0,resid_tau_ci95u_10p0,resid_intra_10p0,resid_inter_10p0,vs30_10p0]=read_data_1csv('induced_lme_20171103/NGAE_p01_resid_10p0_resid_10p0_lme.csv');
 %
 per_arr=[0.1 0.2 0.3 0.4 0.5 1.0 2.0 3.0 4.0 5.0 10.0];
 resid_c_ci95l=[resid_c_ci95l_0p1 resid_c_ci95l_0p2 resid_c_ci95l_0p3 resid_c_ci95l_0p4 resid_c_ci95l_0p5 resid_c_ci95l_1p0 resid_c_ci95l_2p0 resid_c_ci95l_3p0 resid_c_ci95l_4p0 resid_c_ci95l_5p0 resid_c_ci95l_10p0];
@@ -585,6 +658,18 @@ mag.t3p0=mag_3p0;
 mag.t4p0=mag_4p0;
 mag.t5p0=mag_5p0;
 mag.t10p0=mag_10p0;
+%
+vs30.t0p1=vs30_0p1;
+vs30.t0p2=vs30_0p2;
+vs30.t0p3=vs30_0p3;
+vs30.t0p4=vs30_0p4;
+vs30.t0p5=vs30_0p5;
+vs30.t1p0=vs30_1p0;
+vs30.t2p0=vs30_2p0;
+vs30.t3p0=vs30_3p0;
+vs30.t4p0=vs30_4p0;
+vs30.t5p0=vs30_5p0;
+vs30.t10p0=vs30_10p0;
 %
 depth.t0p1=depth_0p1;
 depth.t0p2=depth_0p2;
@@ -628,7 +713,7 @@ end
 
 
 %-----------------------------------------------------
-function [dist,mag,depth,per_arr,resid_c_ci95l,resid_c,resid_c_ci95u,resid_phi_ci95l,resid_phi,resid_phi_ci95u,resid_tau_ci95l,resid_tau,resid_tau_ci95u,resid_intra,resid_inter]=read_data_NGAW2()
+function [dist,mag,depth,per_arr,resid_c_ci95l,resid_c,resid_c_ci95u,resid_phi_ci95l,resid_phi,resid_phi_ci95u,resid_tau_ci95l,resid_tau,resid_tau_ci95u,resid_intra,resid_inter,vs30]=read_data_NGAW2()
 
 %
 [mag_0p1,depth_0p1,dist_0p1,resid_c_ci95l_0p1,resid_c_0p1,resid_c_ci95u_0p1,resid_phi_ci95l_0p1,resid_phi_0p1,resid_phi_ci95u_0p1,resid_tau_ci95l_0p1,resid_tau_0p1,resid_tau_ci95u_0p1,resid_intra_0p1,resid_inter_0p1,vs30_0p1]=read_data_1csv('induced_lme_20171103/NGAW2_resid_0p1_resid_0p1_lme.csv');
@@ -678,6 +763,18 @@ mag.t4p0=mag_4p0;
 mag.t5p0=mag_5p0;
 mag.t10p0=mag_10p0;
 %
+vs30.t0p1=vs30_0p1;
+vs30.t0p2=vs30_0p2;
+vs30.t0p3=vs30_0p3;
+vs30.t0p4=vs30_0p4;
+vs30.t0p5=vs30_0p5;
+vs30.t1p0=vs30_1p0;
+vs30.t2p0=vs30_2p0;
+vs30.t3p0=vs30_3p0;
+vs30.t4p0=vs30_4p0;
+vs30.t5p0=vs30_5p0;
+vs30.t10p0=vs30_10p0;
+%
 depth.t0p1=depth_0p1;
 depth.t0p2=depth_0p2;
 depth.t0p3=depth_0p3;
@@ -718,7 +815,7 @@ end
 %-----------------------------------------------------
 
 %-----------------------------------------------------
-function[mag,depth,dist,resid_c_ci95l,resid_c,resid_c_ci95u,resid_phi_ci95l,resid_phi,resid_phi_ci95u,resid_tau_ci95l,resid_tau,resid_tau_ci95u,resid_intra,resid_inter]=read_data_1csvCEUS(csvfile);
+function[mag,depth,dist,resid_c_ci95l,resid_c,resid_c_ci95u,resid_phi_ci95l,resid_phi,resid_phi_ci95u,resid_tau_ci95l,resid_tau,resid_tau_ci95u,resid_intra,resid_inter,vs30]=read_data_1csvCEUS(csvfile);
 
 %
 ff=csvread(csvfile,1,0);
@@ -762,7 +859,7 @@ end
 %-----------------------------------------------------
 
 %-----------------------------------------------------
-function[mag,depth,dist,resid_c_ci95l,resid_c,resid_c_ci95u,resid_phi_ci95l,resid_phi,resid_phi_ci95u,resid_tau_ci95l,resid_tau,resid_tau_ci95u,resid_intra,resid_inter]=read_data_1csv(csvfile);
+function[mag,depth,dist,resid_c_ci95l,resid_c,resid_c_ci95u,resid_phi_ci95l,resid_phi,resid_phi_ci95u,resid_tau_ci95l,resid_tau,resid_tau_ci95u,resid_intra,resid_inter,vs30]=read_data_1csv(csvfile);
 
 %
 ff=csvread(csvfile,1,0);
@@ -782,18 +879,19 @@ resid3p0=ff(:,13);
 resid4p0=ff(:,14);
 resid5p0=ff(:,15);
 resid10p0=ff(:,16);
-evid=ff(:,17);
-resid_c_ci95l=ff(:,18);
-resid_c=ff(:,19);
-resid_c_ci95u=ff(:,20);
-resid_phi_ci95l=ff(:,21);
-resid_phi=ff(:,22);
-resid_phi_ci95u=ff(:,23);
-resid_tau_ci95l=ff(:,24);
-resid_tau=ff(:,25);
-resid_tau_ci95u=ff(:,26);
-resid_intra=ff(:,27);
-resid_inter=ff(:,28);
+vs30=ff(:,17);
+evid=ff(:,18);
+resid_c_ci95l=ff(:,19);
+resid_c=ff(:,20);
+resid_c_ci95u=ff(:,21);
+resid_phi_ci95l=ff(:,22);
+resid_phi=ff(:,23);
+resid_phi_ci95u=ff(:,24);
+resid_tau_ci95l=ff(:,25);
+resid_tau=ff(:,26);
+resid_tau_ci95u=ff(:,27);
+resid_intra=ff(:,28);
+resid_inter=ff(:,29);
 % means
 resid_c_ci95l=mean(resid_c_ci95l);
 resid_c=mean(resid_c);
@@ -1137,13 +1235,16 @@ end
 function [mag_bins,resid_bins]=bin_mag_resid(mag,resid)
 
 %
-  mag_bins=3:.5:6;
+  magInc=0.25;
+  mag_bins_orig=4:magInc:6;
+  mag_bins=mag_bins_orig-0.05;
   for ii=1:length(mag_bins)-1
     magmin=mag_bins(ii);
     magmax=mag_bins(ii+1);
     eleF=find(mag>=magmin&mag<magmax);
     if (eleF>0) 
       resid_bins(ii)=mean(resid(eleF));
+      cntBins(ii)=length(resid(eleF));
     else
       resid_bins(ii)=-999;
     end
@@ -1152,7 +1253,13 @@ function [mag_bins,resid_bins]=bin_mag_resid(mag,resid)
 %
   eleF2=find(resid_bins>-999);
   mag_bins=mag_bins(eleF2);
+  mag_bins=mag_bins+0.05;
+  cntBins=cntBins(eleF2);
   resid_bins=resid_bins(eleF2);
+%save aaa
+
+%  figure
+%  plot(mag_bins,cntBins,'bs-')
 
 end
 %-----------------------------------------------------
