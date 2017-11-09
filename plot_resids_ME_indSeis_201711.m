@@ -387,8 +387,8 @@ xVals=[100 2000];
 figure
 subplot(2,3,1)
 plot(vs30_ngaw2.t0p1,resid_intra_ngaw2.t0p1,'bs'), hold on
-plot(vs30_bins_0p1_ngaw2,mean_vs30Bins_0p1_ngaw2,'k-'),
-plot(vs30_bins_0p1_ngaw2,mean_vs30Bins_sm_0p1_ngaw2,'k--'),
+%plot(vs30_bins_0p1_ngaw2,mean_vs30Bins_0p1_ngaw2,'k-'),
+errorbar(vs30_bins_0p1_ngaw2,mean_vs30Bins_0p1_ngaw2,sqrt(var_vs30Bins_0p1_ngaw2),sqrt(var_vs30Bins_0p1_ngaw2),'ko'),
 %set(gca,'XScale','log')
 %set(gca,'XLim',[3 300]),
 title('intra-event, NGA-W2 0.1 s')

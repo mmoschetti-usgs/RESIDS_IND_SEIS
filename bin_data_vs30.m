@@ -11,10 +11,12 @@ vs30_bins=logspace(log10(120),log10(1860),nbins);
 save eee
 % loop over all data, calculate mean/var/cnt for all distance bins
 length(vs30_bins)
+cnt=1;
 for ii=1:length(vs30_bins)-1
 %  ii2=ii
   cnt=1;
   tmp_arr=-999;
+  vs30_binC(ii)=0.5*(vs30_bins(ii)+vs30_bins(ii+1));
   for jj=1:length(data_arr_1d)
     if (vs30_arr_1d(jj)>=vs30_bins(ii)) & (vs30_arr_1d(jj) < vs30_bins(ii+1)) 
       tmp_arr(cnt)=data_arr_1d(jj);
@@ -37,14 +39,14 @@ for ii=1:length(vs30_bins)-1
 %  save all_3s_params mean_bins_ln mean_bins sigma_bins_ln var_bins_ln var_bins Z_p1 Z_m1 Z_p2 Z_m2 vs30_bins
 %  clear tmp_arr2
 end
-vs30_bins=vs30_bins(1:length(vs30_bins)-1);
+%vs30_bins=vs30_bins(1:length(vs30_bins)-1);
 save eee2
 
 % remove data points with no data counts 
 %nthresh=3
 %nthresh=10
 nthresh=5;
-vs30_bins=vs30_bins(cnt_vs30Bins>nthresh);
+vs30_bins=vs30_binC(cnt_vs30Bins>nthresh);
 mean_vs30Bins=mean_vs30Bins(cnt_vs30Bins>nthresh);
 var_vs30Bins=var_vs30Bins(cnt_vs30Bins>nthresh);
 cnt_vs30Bins=cnt_vs30Bins(cnt_vs30Bins>nthresh);
