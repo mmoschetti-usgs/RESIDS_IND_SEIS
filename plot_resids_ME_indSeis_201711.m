@@ -111,6 +111,7 @@ plot(per_arr_ngaep03,resid_tau_ci95u_ngaep03,'r--'),
 plot(per_arr_ceus,resid_tau_ci95l_ceus,'c-'), 
 plot(per_arr_ceus,resid_tau_ci95u_ceus,'c-'), 
 set(gca,'XScale','log')
+set(gca,'YLim',[0 1])
 title('\tau')
 xlabel('T (s)')
 %set(gca,'YLim',[-0.2 0.8])
@@ -125,6 +126,7 @@ plot(per_arr_ngaep03,resid_phi_ci95u_ngaep03,'r--'),
 plot(per_arr_ceus,resid_phi_ci95l_ceus,'c-'), 
 plot(per_arr_ceus,resid_phi_ci95u_ceus,'c-'), 
 set(gca,'XScale','log')
+set(gca,'YLim',[0 1])
 title('\phi')
 xlabel('T (s)')
 %set(gca,'YLim',[-0.2 0.8])
@@ -191,54 +193,6 @@ if plot_within_event
 [dist_bins_0p5_ceus,cnt_distBins_0p5_ceus, mean_distBins_0p5_ceus,var_distBins_0p5_ceus,mean_distBins_sm_0p5_ceus,var_distBins_sm_0p5_ceus]=bin_logData_by_dist(dist_ceus.t0p5,resid_intra_ceus.t0p5);
 [dist_bins_1p0_ceus,cnt_distBins_1p0_ceus, mean_distBins_1p0_ceus,var_distBins_1p0_ceus,mean_distBins_sm_1p0_ceus,var_distBins_sm_1p0_ceus]=bin_logData_by_dist(dist_ceus.t1p0,resid_intra_ceus.t1p0);
 [dist_bins_2p0_ceus,cnt_distBins_2p0_ceus, mean_distBins_2p0_ceus,var_distBins_2p0_ceus,mean_distBins_sm_2p0_ceus,var_distBins_sm_2p0_ceus]=bin_logData_by_dist(dist_ceus.t2p0,resid_intra_ceus.t2p0);
-%
-if plot_within_event_vs30
-figure
-subplot(2,3,1)
-plot(vs30_ngaw2.t0p1,resid_intra_ngaw2.t0p1,'bs'), hold on
-%set(gca,'XScale','log')
-%set(gca,'XLim',[3 300]),
-title('intra-event, NGA-W2 0.1 s')
-xlabel('Vs30 (m/s)')
-ylabel('mean(intra)')
-subplot(2,3,2)
-plot(vs30_ngaw2.t0p2,resid_intra_ngaw2.t0p2,'bs'), hold on
-%set(gca,'XScale','log')
-%set(gca,'XLim',[3 300]),
-title('0.2 s')
-xlabel('Vs30 (m/s)')
-ylabel('mean(intra)')
-subplot(2,3,3)
-plot(vs30_ngaw2.t0p3,resid_intra_ngaw2.t0p3,'bs'), hold on
-%set(gca,'XScale','log')
-%set(gca,'XLim',[3 300]),
-title('0.3 s')
-xlabel('Vs30 (m/s)')
-ylabel('mean(intra)')
-subplot(2,3,4)
-plot(vs30_ngaw2.t1p0,resid_intra_ngaw2.t1p0,'bs'), hold on
-%set(gca,'XScale','log')
-%set(gca,'XLim',[3 300]),
-title('1.0 s')
-xlabel('Vs30 (m/s)')
-ylabel('mean(intra)')
-subplot(2,3,5)
-plot(vs30_ngaw2.t2p0,resid_intra_ngaw2.t2p0,'bs'), hold on
-%set(gca,'XScale','log')
-%set(gca,'XLim',[3 300]),
-title('2.0 s')
-%xlabel('R (km)')
-xlabel('Vs30 (m/s)')
-ylabel('mean(intra)')
-subplot(2,3,6)
-plot(vs30_ngaw2.t3p0,resid_intra_ngaw2.t3p0,'bs'), hold on
-title('3.0 s')
-xlabel('Vs30 (m/s)')
-ylabel('mean(intra)')
-%set(gca,'XScale','log')
-%set(gca,'XLim',[3 300]),
-end % end within event vs30
-
 %
 figure
 subplot(2,3,1)
@@ -416,6 +370,97 @@ title('CEUS,0.1')
 %subplot(2,3,6)
 %plot1intra(rrup,intra_10,10)
 end
+%
+if plot_within_event_vs30
+save aaa3
+% bin by vs30
+[vs30_bins_0p1_ngaw2,cnt_vs30Bins_0p1_ngaw2, mean_vs30Bins_0p1_ngaw2,var_vs30Bins_0p1_ngaw2,mean_vs30Bins_sm_0p1_ngaw2,var_vs30Bins_sm_0p1_ngaw2]=bin_data_vs30(vs30_ngaw2.t0p1,resid_intra_ngaw2.t0p1);
+[vs30_bins_0p2_ngaw2,cnt_vs30Bins_0p2_ngaw2, mean_vs30Bins_0p2_ngaw2,var_vs30Bins_0p2_ngaw2,mean_vs30Bins_sm_0p2_ngaw2,var_vs30Bins_sm_0p2_ngaw2]=bin_data_vs30(vs30_ngaw2.t0p2,resid_intra_ngaw2.t0p2);
+[vs30_bins_0p3_ngaw2,cnt_vs30Bins_0p3_ngaw2, mean_vs30Bins_0p3_ngaw2,var_vs30Bins_0p3_ngaw2,mean_vs30Bins_sm_0p3_ngaw2,var_vs30Bins_sm_0p3_ngaw2]=bin_data_vs30(vs30_ngaw2.t0p3,resid_intra_ngaw2.t0p3);
+[vs30_bins_1p0_ngaw2,cnt_vs30Bins_1p0_ngaw2, mean_vs30Bins_1p0_ngaw2,var_vs30Bins_1p0_ngaw2,mean_vs30Bins_sm_1p0_ngaw2,var_vs30Bins_sm_1p0_ngaw2]=bin_data_vs30(vs30_ngaw2.t1p0,resid_intra_ngaw2.t1p0);
+[vs30_bins_2p0_ngaw2,cnt_vs30Bins_2p0_ngaw2, mean_vs30Bins_2p0_ngaw2,var_vs30Bins_2p0_ngaw2,mean_vs30Bins_sm_2p0_ngaw2,var_vs30Bins_sm_2p0_ngaw2]=bin_data_vs30(vs30_ngaw2.t2p0,resid_intra_ngaw2.t2p0);
+[vs30_bins_3p0_ngaw2,cnt_vs30Bins_3p0_ngaw2, mean_vs30Bins_3p0_ngaw2,var_vs30Bins_3p0_ngaw2,mean_vs30Bins_sm_3p0_ngaw2,var_vs30Bins_sm_3p0_ngaw2]=bin_data_vs30(vs30_ngaw2.t3p0,resid_intra_ngaw2.t3p0);
+
+% plotting vs30, within-event residuals
+yVals=[-2.5 2.5];
+xVals=[100 2000];
+figure
+subplot(2,3,1)
+plot(vs30_ngaw2.t0p1,resid_intra_ngaw2.t0p1,'bs'), hold on
+plot(vs30_bins_0p1_ngaw2,mean_vs30Bins_0p1_ngaw2,'k-'),
+plot(vs30_bins_0p1_ngaw2,mean_vs30Bins_sm_0p1_ngaw2,'k--'),
+%set(gca,'XScale','log')
+%set(gca,'XLim',[3 300]),
+title('intra-event, NGA-W2 0.1 s')
+xlabel('Vs30 (m/s)')
+ylabel('mean(intra)')
+set(gca,'YLim',yVals),
+set(gca,'XLim',xVals),
+set(gca,'XScale','log'),
+subplot(2,3,2)
+plot(vs30_ngaw2.t0p2,resid_intra_ngaw2.t0p2,'bs'), hold on
+plot(vs30_bins_0p2_ngaw2,mean_vs30Bins_0p2_ngaw2,'k-'),
+plot(vs30_bins_0p2_ngaw2,mean_vs30Bins_sm_0p2_ngaw2,'k--'),
+%set(gca,'XScale','log')
+%set(gca,'XLim',[3 300]),
+set(gca,'YLim',yVals),
+set(gca,'XScale','log'),
+set(gca,'XLim',xVals),
+title('0.2 s')
+xlabel('Vs30 (m/s)')
+ylabel('mean(intra)')
+subplot(2,3,3)
+plot(vs30_ngaw2.t0p3,resid_intra_ngaw2.t0p3,'bs'), hold on
+plot(vs30_bins_0p3_ngaw2,mean_vs30Bins_0p3_ngaw2,'k-'),
+plot(vs30_bins_0p3_ngaw2,mean_vs30Bins_sm_0p3_ngaw2,'k--'),
+%set(gca,'XScale','log')
+%set(gca,'XLim',[3 300]),
+set(gca,'YLim',yVals),
+set(gca,'XScale','log'),
+set(gca,'XLim',xVals),
+title('0.3 s')
+xlabel('Vs30 (m/s)')
+ylabel('mean(intra)')
+subplot(2,3,4)
+plot(vs30_ngaw2.t1p0,resid_intra_ngaw2.t1p0,'bs'), hold on
+plot(vs30_bins_1p0_ngaw2,mean_vs30Bins_1p0_ngaw2,'k-'),
+plot(vs30_bins_1p0_ngaw2,mean_vs30Bins_sm_1p0_ngaw2,'k--'),
+%set(gca,'XScale','log')
+%set(gca,'XLim',[3 300]),
+set(gca,'YLim',yVals),
+set(gca,'XScale','log'),
+set(gca,'XLim',xVals),
+title('1.0 s')
+xlabel('Vs30 (m/s)')
+ylabel('mean(intra)')
+subplot(2,3,5)
+plot(vs30_ngaw2.t2p0,resid_intra_ngaw2.t2p0,'bs'), hold on
+plot(vs30_bins_2p0_ngaw2,mean_vs30Bins_2p0_ngaw2,'k-'),
+plot(vs30_bins_2p0_ngaw2,mean_vs30Bins_sm_2p0_ngaw2,'k--'),
+%set(gca,'XScale','log')
+%set(gca,'XLim',[3 300]),
+set(gca,'YLim',yVals),
+set(gca,'XScale','log'),
+set(gca,'XLim',xVals),
+title('2.0 s')
+%xlabel('R (km)')
+xlabel('Vs30 (m/s)')
+ylabel('mean(intra)')
+subplot(2,3,6)
+plot(vs30_ngaw2.t3p0,resid_intra_ngaw2.t3p0,'bs'), hold on
+plot(vs30_bins_3p0_ngaw2,mean_vs30Bins_3p0_ngaw2,'k-'),
+plot(vs30_bins_3p0_ngaw2,mean_vs30Bins_sm_3p0_ngaw2,'k--'),
+set(gca,'YLim',yVals),
+set(gca,'XScale','log'),
+set(gca,'XLim',xVals),
+title('3.0 s')
+xlabel('Vs30 (m/s)')
+ylabel('mean(intra)')
+%set(gca,'XScale','log')
+%set(gca,'XLim',[3 300]),
+end % end within event vs30
+
+
 %..............................
 
 % intra-event, together
